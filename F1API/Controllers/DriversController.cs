@@ -20,9 +20,26 @@ namespace F1API.Controllers
 
     // GET f1api/drivers
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Driver>>> Get()
+    public async Task<ActionResult<IEnumerable<Driver>>> Get(string name, int age, string team)
     {
-      return await _db.Drivers.ToListAsync();
+      var query = _db.Drivers.AsQueryable();
+
+      if (name != null)
+      {
+        query = query.Where(e => e.Name.Contains(name));
+      }
+
+      if (age > 0)
+      {
+        query = query.Where(e => e.Age >= age);
+      }
+
+      if (team != null)
+      {
+        query = query.Where(e => e.Team.Contains(team));
+      }
+
+      return await query.ToListAsync();
     }
 
     // POST f1api/drivers

@@ -68,7 +68,7 @@ namespace F1API.Migrations
                         {
                             DriverId = 5,
                             Age = 34,
-                            Name = "Aston Martin",
+                            Name = "Sebastian Vettel",
                             Team = "Astin Martin"
                         });
                 });

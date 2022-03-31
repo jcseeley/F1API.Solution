@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace F1API.Migrations
 {
     [DbContext(typeof(F1Context))]
-    [Migration("20220331210934_SeedData")]
+    [Migration("20220331211322_SeedData")]
     partial class SeedData
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -70,7 +70,7 @@ namespace F1API.Migrations
                         {
                             DriverId = 5,
                             Age = 34,
-                            Name = "Aston Martin",
+                            Name = "Sebastian Vettel",
                             Team = "Astin Martin"
                         });
                 });

@@ -8,8 +8,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace F1API.Migrations
 {
     [DbContext(typeof(F1Context))]
-    [Migration("20220331211322_SeedData")]
-    partial class SeedData
+    [Migration("20220331211654_InitialWithSeedData")]
+    partial class InitialWithSeedData
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

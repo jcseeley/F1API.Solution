@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace F1API.Migrations
 {
-    public partial class initial : Migration
+    public partial class InitialWithSeedData : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -20,6 +20,18 @@ namespace F1API.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Drivers", x => x.DriverId);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Drivers",
+                columns: new[] { "DriverId", "Age", "Name", "Team" },
+                values: new object[,]
+                {
+                    { 1, 37, "Lewis Hamilton", "Mercedes" },
+                    { 2, 24, "Max Verstappen", "Red Bull" },
+                    { 3, 32, "Daniel Ricciardo", "McLaren" },
+                    { 4, 27, "Carlos Sainz", "Ferrari" },
+                    { 5, 34, "Sebastian Vettel", "Astin Martin" }
                 });
         }
 

@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using F1API.Models;
+using F1API.Wrappers;
+using F1API.Filters;
+using F1API.Helpers;
 
 namespace F1API.Controllers
 {
@@ -12,16 +15,20 @@ namespace F1API.Controllers
   public class DriversController : ControllerBase
   {
     private readonly F1Context _db;
+    private readonly IUriService _uriService;
 
-    public DriversController(F1Context db)
+    public DriversController(F1Context db, IUriService uriService)
     {
       _db = db;
+      _uriService = uriService;
     }
 
     // GET f1api/drivers
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Driver>>> Get(string name, int age, string team)
+    public async Task<ActionResult<IEnumerable<Driver>>> Get([FromQuery] PaginationFilter filter, string name, int age, string team)
     {
+      var route = Request.Path.Value;
+      var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
       var query = _db.Drivers.AsQueryable();
 
       if (name != null)
@@ -39,7 +46,13 @@ namespace F1API.Controllers
         query = query.Where(e => e.Team.Contains(team));
       }
 
-      return await query.ToListAsync();
+      var pagedData = await query
+        .Skip((validFilter.PageNumber - 1) * validFilter.PageSize)
+        .Take(validFilter.PageSize)
+        .ToListAsync();
+      var totalRecords = await _db.Drivers.CountAsync();
+      var pagedResponse = PaginationHelper.CreatePagedReponse<Driver>(pagedData, validFilter, totalRecords, _uriService, route);
+      return Ok(pagedResponse);
     }
 
     // POST f1api/drivers
@@ -63,7 +76,7 @@ namespace F1API.Controllers
             return NotFound();
         }
 
-        return driver;
+        return Ok(new Response<Driver>(driver));
     }
 
     // PUT: f1api/drivers/1
